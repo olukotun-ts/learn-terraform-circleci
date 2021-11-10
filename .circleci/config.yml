@@ -16,8 +16,10 @@ jobs:
   configure-aws:
     executor: aws-cli/default
     steps:
+      - checkout
       - aws-cli/setup
-      - run: echo "Run your code here"
+      - terraform/install
+      - terraform/validate
   plan-apply:
     executor: terraform
     steps:
