@@ -75,6 +75,7 @@ workflows:
           requires:
             - terraform/validate
       - approve-apply:
+          type: approval
           requires:
             - terraform/plan
       - terraform/apply:
@@ -82,6 +83,7 @@ workflows:
           requires:
             - approve-apply
       - approve-destroy:
+          type: approval
           requires:
             - terraform/apply
       - terraform/destroy:
