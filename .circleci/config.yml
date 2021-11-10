@@ -67,8 +67,6 @@ workflows:
     jobs:
       - terraform/validate:
           checkout: true
-          requires:
-            - configure-aws
       - terraform/plan:
           checkout: true
           persist-workspace: true
