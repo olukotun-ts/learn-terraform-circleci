@@ -1,6 +1,7 @@
 version: 2.1
 
 orbs:
+  aws-cli: circleci/aws-cli@2.0.3
   terraform: circleci/terraform@3.0.0
 
 executors:
@@ -12,6 +13,11 @@ executors:
           password: $DOCKER_PASSWORD
 
 jobs:
+  configure-aws:
+    executor: aws-cli/default
+    steps:
+      - aws-cli/setup
+      - run: echo "Run your code here"
   plan-apply:
     executor: terraform
     steps:
@@ -65,8 +71,11 @@ workflows:
   version: 2
   approve_cycle_orbs:
     jobs:
+      - configure-aws
       - terraform/validate:
           checkout: true
+          requires:
+            - configure-aws
       - terraform/plan:
           checkout: true
           persist-workspace: true
@@ -89,23 +98,3 @@ workflows:
           requires:
             - approve-destroy
   
-  approve_cycle:
-    jobs:
-      - plan-apply
-      - hold-apply:
-          type: approval
-          requires:
-            - plan-apply
-      - apply:
-          requires:
-            - hold-apply
-      - plan-destroy:
-          requires:
-            - apply
-      - hold-destroy:
-          type: approval
-          requires:
-            - plan-destroy
-      - destroy:
-          requires:
-            - hold-destroy
