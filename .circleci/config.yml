@@ -9,6 +9,7 @@ jobs:
     executor: aws-cli/default
     steps:
       - aws-cli/setup
+      - terraform/install
       - terraform/init
       - terraform/plan
 
