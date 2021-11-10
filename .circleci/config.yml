@@ -62,7 +62,8 @@ workflows:
   version: 2
   plan_approve_apply:
     jobs:
-      - plan-apply
+      - plan-apply:
+          context: cloudSecrets
       - hold-apply:
           type: approval
           requires:
