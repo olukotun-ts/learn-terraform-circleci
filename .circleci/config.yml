@@ -9,6 +9,8 @@ jobs:
     executor: aws-cli/default
     steps:
       - aws-cli/setup
+      - terraform/init
+      - terraform/plan
 
   plan-apply:
     docker:
